@@ -20,8 +20,11 @@ class EventMonitor(object):
         if match:
           response = self.message_parser.format(match)
 
-          # DM the response text to the user
-          self.slack_client.api_call('chat.postMessage', channel=message.get('user'), text=response, as_user='better_words')
+          # Send the response text to the user in a private message
+          self.slack_client.api_call('chat.postMessage',
+            channel=message.get('user'),
+            text=response,
+            as_user='better_words')
 
   def start(self, port=None, debug=False):
     self.slack_events_adapter.start(port=port, debug=debug)
