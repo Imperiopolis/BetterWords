@@ -1,0 +1,15 @@
+{
+  "name": "Better Words",
+  "description": "Learn more about your words and their social impact and build new habits around your language",
+  "repository": "https://github.com/Imperiopolis/better-words",
+  "env": {
+    "SLACK_VERIFICATION_TOKEN": {
+      "description": "From your Slack app's Settings > Basic Information > App Credentials > Verification Token",
+      "required": true
+    },
+    "SLACK_BOT_TOKEN": {
+      "description": "Settings > Install App > Bot User OAuth Access Token",
+      "required": true
+    }
+  }
+}

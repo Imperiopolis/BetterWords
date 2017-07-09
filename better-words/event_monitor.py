@@ -1,14 +1,14 @@
-from os import environ
-from slackeventsapi import SlackEventAdapter
+from slack_emitter import SlackEventAdapter
 from slackclient import SlackClient
 from message_parser import MessageParser
+from config import SLACK_BOT_TOKEN, SLACK_VERIFICATION_TOKEN
 
 class EventMonitor(object):
     """A class that monitors for slack events and handles them appropriately"""
     def __init__(self):
-        self.slack_client = SlackClient(environ['SLACK_BOT_TOKEN'])
+        self.slack_client = SlackClient(SLACK_BOT_TOKEN)
         self.message_parser = MessageParser()
-        self.slack_events_adapter = SlackEventAdapter(environ['SLACK_VERIFICATION_TOKEN'], '/slack/events')
+        self.slack_events_adapter = SlackEventAdapter(SLACK_VERIFICATION_TOKEN)
 
         # register for the events we care about
         @self.slack_events_adapter.on('message')
