@@ -55,7 +55,7 @@ class MessageParser(object):
 def word_match(word, string):
     # Matches the word only if it is not surrounded by backticks
     regex = r'(?!\B`[^`]*)\b' + word + r'\b(?![^`]*`\B)'
-    return re.search(regex, string)
+    return re.search(regex, string, re.IGNORECASE)
 
 def format_match(match):
     """format a message to be sent to the user"""
