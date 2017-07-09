@@ -1,6 +1,6 @@
 ## Better words
 
-[![Deploy on your own Heroku server!](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+[![Deploy on your own Heroku server!](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy) <-- click here to deploy this app on your own free Heroku server!
 
 Learn more about your words and their social impact and build new habits around your language.
 
