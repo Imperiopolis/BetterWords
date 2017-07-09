@@ -7,6 +7,8 @@ Learn more about your words and their social impact and build new habits around 
 
 ### Using the app
 
+The bot will not message you about a word if you escape it with backticks.
+
 TODO: add details about all the commands and how they work, once we build them
 
 

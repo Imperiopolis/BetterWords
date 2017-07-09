@@ -47,33 +47,35 @@ class MessageParser(object):
         for category in self.words:
             for entry in category.entries:
                 for word in entry.words:
-                    regex = r'\b' + word + r'\b'
-                    match = re.search(regex, message.get('text'))
+                    match = word_match(word, message.get('text'))
                     if match:
                         return ParserMatch(message, category, entry, match.group(0))
         return None
 
-    def format(self, match):
-        """format a message to be sent to the user"""
-        user = match.message.get('user')
-        message_text = match.message.get('text')
+def word_match(word, string):
+    # Matches the word only if it is not surrounded by backticks
+    regex = r'(?!\B`[^`]*)\b' + word + r'\b(?![^`]*`\B)'
+    return re.search(regex, string)
 
-        # if the message is multiple lines, reduce the message text
-        # to be quoted to only the line containing the matching word
-        # TODO: replace by linking / sharing the original message
-        # to the user
-        lines = message_text.split('\n')
-        if len(lines) > 1:
-            for line in lines:
-                regex = r'\b' + match.word + r'\b'
-                match = re.search(regex, line)
-                if match:
-                    message_text = line
-                    break
+def format_match(match):
+    """format a message to be sent to the user"""
+    user = match.message.get('user')
+    message_text = match.message.get('text')
 
-        formatted = "Hey <@{}>, I noticed you said:\n".format(user)
-        formatted += "> {}\n".format(message_text) # quoted message they sent
-        formatted += "{}\n\n".format(match.category.response) # explanation of why word is harmful
-        formatted += "Instead of _'{}'_, try some of the following examples:\n".format(match.word)
-        formatted += "* {}".format('\n* '.join(match.entry.suggestions))
-        return formatted
+    # if the message is multiple lines, reduce the message text
+    # to be quoted to only the line containing the matching word
+    # TODO: replace by linking / sharing the original message
+    # to the user
+    lines = message_text.split('\n')
+    if len(lines) > 1:
+        for line in lines:
+            if word_match(match.word, line):
+                message_text = line
+                break
+
+    formatted = "Hey <@{}>, I noticed you said:\n".format(user)
+    formatted += "> {}\n".format(message_text) # quoted message they sent
+    formatted += "{}\n\n".format(match.category.response) # explanation of why word is harmful
+    formatted += "Instead of _'{}'_, try some of the following examples:\n".format(match.word)
+    formatted += "* {}".format('\n* '.join(match.entry.suggestions))
+    return formatted

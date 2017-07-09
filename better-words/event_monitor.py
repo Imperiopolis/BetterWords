@@ -1,6 +1,6 @@
 from slack_emitter import SlackEventAdapter
 from slackclient import SlackClient
-from message_parser import MessageParser
+from message_parser import MessageParser, format_match
 from config import SLACK_BOT_TOKEN, SLACK_VERIFICATION_TOKEN
 
 class EventMonitor(object):
@@ -19,7 +19,7 @@ class EventMonitor(object):
             if message.get('subtype') is None:
                 match = self.message_parser.is_match(message)
                 if match:
-                    response = self.message_parser.format(match)
+                    response = format_match(match)
 
                     # Send the response text to the user in a private message
                     self.slack_client.api_call('chat.postMessage',
