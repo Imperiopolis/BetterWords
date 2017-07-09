@@ -21,11 +21,25 @@ class EventMonitor(object):
                 if match:
                     response = format_match(match)
 
+                    user_info = self.slack_client.api_call('users.info', user=message.get('user'))
+
+                    quote = {
+                        'fallback': message.get('text'),
+                        'author_name': user_info['user']['name'],
+                        'author_icon': user_info['user']['profile']['image_24'],
+                        'text': message.get('text'),
+                        'footer': 'Posted in <#{}>'.format(message.get("channel")),
+                        'ts': message.get('ts')
+                    }
+
+                    explanation = {'pretext': response.explanation}
+
                     # Send the response text to the user in a private message
                     self.slack_client.api_call('chat.postMessage',
                                                channel=message.get('user'),
-                                               text=response,
-                                               as_user='better_words')
+                                               text=response.intro,
+                                               as_user='better_words',
+                                               attachments=[quote, explanation])
 
     def start(self, port=None, debug=False):
         """

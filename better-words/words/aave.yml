@@ -1,7 +1,7 @@
 # A default response, that prefixes all messages from the bot within this category
 # TODO: actually support opting out
 # TODO: Maybe have a specific standard opt out response section
-response: Please be aware that this word or phrase originated as part of African American Vernacular English (AAVE), colloquially referred to as ebonics. In general, we recommend avoiding AAVE to prevent appropriation of black culture. However, as most languages do, many words from this vernacular have spread into common English communication. If you are African American, or for some other reason feel comfortable using AAVE, you may opt out of this category at any time by messaging me _"opt out aave"_
+response: Please be aware that this word or phrase originated as part of African American Vernacular English (AAVE), colloquially referred to as ebonics. In general, we recommend avoiding AAVE to prevent appropriation of black culture. However, as most languages do, many words from this vernacular have spread into common English communication. If you are African American, or for some other reason feel comfortable using AAVE, you may opt out of this category at any time by messaging me "opt out aave"
 
 # An array containing groups of words and alternative suggestions
 # TODO: actually come up with real groups / suggestions for AAVE, this is all placeholder stuff

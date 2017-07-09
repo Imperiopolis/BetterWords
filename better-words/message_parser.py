@@ -6,6 +6,7 @@ import yaml
 
 # A named tuple representing a match from the parser
 ParserMatch = namedtuple('ParserMatch', 'message category entry word')
+FormattedMatch = namedtuple('FormattedMatch', 'intro explanation')
 
 class MessageParser(object):
     """A class used to parse a given message for a target word or phrase."""
@@ -62,20 +63,10 @@ def format_match(match):
     user = match.message.get('user')
     message_text = match.message.get('text')
 
-    # if the message is multiple lines, reduce the message text
-    # to be quoted to only the line containing the matching word
-    # TODO: replace by linking / sharing the original message
-    # to the user
-    lines = message_text.split('\n')
-    if len(lines) > 1:
-        for line in lines:
-            if word_match(match.word, line):
-                message_text = line
-                break
+    intro = "Hey <@{}>, I noticed you said \"{}\"\n\n".format(user, match.word)
 
-    formatted = "Hey <@{}>, I noticed you said:\n".format(user)
-    formatted += "> {}\n".format(message_text) # quoted message they sent
-    formatted += "{}\n\n".format(match.category.response) # explanation of why word is harmful
-    formatted += "Instead of _'{}'_, try some of the following examples:\n".format(match.word)
-    formatted += "* {}".format('\n* '.join(match.entry.suggestions))
-    return formatted
+    explanation = "{}\n\n".format(match.category.response) # explanation of why word is harmful
+    explanation += "Instead of \"{}\", try some of the following examples:\n".format(match.word)
+    explanation += "* {}".format('\n* '.join(match.entry.suggestions))
+
+    return FormattedMatch(intro, explanation)
