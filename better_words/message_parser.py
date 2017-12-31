@@ -13,10 +13,10 @@ class MessageParser(object):
     def __init__(self):
         # iterate over all the word categories and load up each yml file
         words = {}
-        for file_name in listdir('./better-words/words'):
+        for file_name in listdir('./better_words/words'):
             category, extension = splitext(file_name)
             if extension == '.yml':
-                with open('./better-words/words/' + file_name, 'r') as stream:
+                with open('./better_words/words/' + file_name, 'r') as stream:
                     words[category] = yaml.load(stream)
 
         self.words = self.parse_yaml(words)

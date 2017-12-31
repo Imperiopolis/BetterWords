@@ -17,6 +17,8 @@ class EventMonitor(object):
 
             # we only want to parse basic messages, not bot messages or other special subtypes
             if message.get('subtype') is None:
+                # check if is command, execute if true
+
                 match = self.message_parser.is_match(message)
                 if match:
                     response = format_match(match)
