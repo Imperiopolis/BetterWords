@@ -3,9 +3,14 @@ from db import session
 from os import listdir, getcwd
 from os.path import splitext
 from collections import namedtuple
+from hashlib import sha1
 import re
 import yaml
 from better_words.models import *
+
+def create_id(value, prefix=""):
+    # Hash the value to produce a clean id (no special characters, spaces, etc.)
+    return sha1(prefix+value).hexdigest()
 
 def parse_yaml(dictionary):
     """
@@ -32,17 +37,42 @@ for file_name in listdir('./better_words/words'):
 
 words = parse_yaml(words)
 
-# TODO: Make this actually work
+# Purge old word data from the DB
+session.query(Category).delete()
+session.query(Word).delete()
+session.query(Suggestion).delete()
+session.query(Link).delete()
+
 for category, value in words._asdict().iteritems():
-    c = Category(slug=category, response=value.response)
+    # Create the category, and store its response
+    c = Category(id=create_id(category), response=value.response)
     session.add(c)
 
+    # Create each word entry for within the category
     for entry in value.entries:
+        prefix = category+'_'+entry.type+'_'
+
+        suggestion_models = []
+        for suggestion in entry.suggestions:
+            model = Suggestion(id=create_id(suggestion, prefix), word=suggestion)
+            session.add(model)
+            suggestion_models.append(model)
+
+        link_models = []
+        # Links are optional, so they might not exist
+        if (hasattr(entry, 'links')):
+            for link in entry.links:
+                model = Link(id=create_id(link, prefix), href=link)
+                session.add(model)
+                link_models.append(model)
+
         for word in entry.words:
-            session.add(Word(slug=category+'_'+word, word=word, category_slug=category))
+            model = Word(id=create_id(word, prefix), word=word, category_id=category)
 
-    session.commit()
+            # Create associations
+            [model.suggestions.append(suggestion) for suggestion in suggestion_models]
+            [model.links.append(link) for link in link_models if link_models]
 
-# u = models.User(id='abcd', name='123')
-# session.add(u)
-# session.commit()
+            session.add(model)
+
+session.commit()

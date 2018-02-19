@@ -6,7 +6,8 @@ response: Please be aware that this word or phrase originated as part of African
 # An array containing groups of words and alternative suggestions
 # TODO: actually come up with real groups / suggestions for AAVE, this is all placeholder stuff
 entries:
-  - words:
+  - type: yas
+    words:
     - werk
     - y(a+)(s+) # match variable numbers of a and s
     # A set of links related to words in this sub-category, which will be shared with the user on request
@@ -15,16 +16,19 @@ entries:
     # Alternative word / phrase suggestions that are safe replacements for the words in this sub group
     suggestions:
       - '???'
-  - words:
+  - type: here_for
+    words:
     - here for this
     - here for that
     suggestions:
       - '???'
-  - words:
+  - type: struggle
+    words:
     - the struggle
     suggestions:
       - '???'
-  - words:
+  - type: ratchet
+    words:
     - ratchet
     - ghetto
     suggestions:
