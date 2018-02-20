@@ -5,8 +5,7 @@ from better_words.models import *
 
 engine = create_engine(environ.get('DATABASE_URL', 'sqlite:///db.sqlite'))
 
-Base.metadata.create_all(engine)
-Base.metadata.bind = engine
+Base.metadata.create_all(bind=engine)
 
 DBSession = sessionmaker(bind=engine)
 

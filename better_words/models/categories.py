@@ -4,8 +4,8 @@ from base import Base
 
 class Category(Base):
     __tablename__ = 'categories'
-    id = Column(String(40), primary_key=True)
+    slug = Column(String(255), primary_key=True)
     response = Column(Text)
     words = relationship('Word',
-      backref='category',
-      cascade='all, delete, delete-orphan')
+        back_populates='category',
+        cascade='all, delete, delete-orphan')

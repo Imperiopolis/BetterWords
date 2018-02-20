@@ -42,10 +42,12 @@ session.query(Category).delete()
 session.query(Word).delete()
 session.query(Suggestion).delete()
 session.query(Link).delete()
+session.execute('DELETE FROM link_to_word_associations')
+session.execute('DELETE FROM suggestion_to_word_associations')
 
 for category, value in words._asdict().iteritems():
     # Create the category, and store its response
-    c = Category(id=create_id(category), response=value.response)
+    c = Category(slug=category, response=value.response)
     session.add(c)
 
     # Create each word entry for within the category
@@ -67,7 +69,7 @@ for category, value in words._asdict().iteritems():
                 link_models.append(model)
 
         for word in entry.words:
-            model = Word(id=create_id(word, prefix), word=word, category_id=category)
+            model = Word(id=create_id(word, prefix), word=word, category_slug=category)
 
             # Create associations
             [model.suggestions.append(suggestion) for suggestion in suggestion_models]

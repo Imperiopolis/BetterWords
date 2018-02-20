@@ -7,7 +7,8 @@ class Word(Base):
     __tablename__ = 'words'
     id = Column(String(40), primary_key=True)
     word = Column(String(255), nullable=False)
-    category_id = Column(String(255), ForeignKey('categories.id'))
+    category_slug = Column(String(255), ForeignKey('categories.slug'))
+    category = relationship('Category', back_populates='words')
     links = relationship('Link',
         secondary=word_to_link,
         backref='words')
